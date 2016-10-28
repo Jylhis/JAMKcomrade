@@ -22,8 +22,16 @@
  SOFTWARE.
 */
 
+/* KÄYTTÖ
+   luokka=LUOKKATUNNUS
+*/
+
 // Prepare
-$luokka = "TTV15S3";
+if(isset($_GET['luokka'])) {
+    $luokka = $_GET['luokka'];
+} else {
+    $luokka = "TTV15S3";
+}
 date_default_timezone_set('Europe/Helsinki');
 $date = date('ymd');
 $fDate = date('ym') . date('d')-(date('N')-1);
@@ -62,17 +70,21 @@ foreach($rows as $row) {
 // Parse data with regex
 $prev = "";
 $i = 0;
+$odata = array(
+    0 => array(),
+    1 => array(),
+    2 => array(),
+    3 => array(),
+    4 => array()
+);
 foreach($data as $day) {
     $j = 0;
     foreach($day as $lesson) {
          if(strcmp($prev, $lesson) === 0) {
              continue;
         } else {
-             
             $prev = $lesson;
             $j += 1;
-            print_r($lesson."
-");
 
             $timeP = '/\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2}/';
             $courseP = "/([A-Z]{4}\d{4})|LUMA|([A-Z]{5}\d{3})/";
@@ -85,26 +97,15 @@ foreach($data as $day) {
             $name = preg_split("/(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s(([A-Z]{5}\d{3}\.(\d\w){2}\d)|LUMA|([A-Z]{4}\d{4}\.(\d\w){2}\d))\W*/", $lesson);
             $name = preg_split("/([0-9]?[A-z][0-9]_[A-Z][0-9]{3}).*\)/", $name[1]);
             $name = $name[0];
-            print_r($name."
-");
-            /*
-            $vdata[$i][$j]["time"] = $$time;
-            $vdata[$i][$j]["room"] = $room;
-            $vdata[$i][$j]["name"] = $name;
-            $vdata[$i][$j]["courseid"] = $course;
-            print_r($vdata);
 
-            $data[$i] = {
-                "time" => $time,
-                "room" => $room,
-                "name" => $name,
-                "courseid" => $course
-                };*/
-            
+            $odata[$i][$j]["time"] = $time[0];
+            $odata[$i][$j]["room"] = $room[0];
+            $odata[$i][$j]["name"] = $name;
+            $odata[$i][$j]["courseid"] = $course[0];
         }
-        $i += 1;
     }
+    $i += 1;
 }
 
-//print_r($data);
+print_r($odata);
 ?>
