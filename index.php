@@ -6,8 +6,8 @@
   </head>
 <body>
 <?php
-$file = file_get_contents("data.json");
-$json = json_decode($file, true);
+
+$data = unserialize(file_get_contents("data.array"));
 
 $weekday = array(
     0 => "Maanantai",
@@ -19,9 +19,7 @@ $weekday = array(
 echo"<h1>TTV15S3</h1>";
 for ($i = 0; $i < 5; $i++) {
     echo "<hr><h2>{$weekday[$i]}</h2>";
-    //print_r($json[$i]);
-    foreach($json[$i] as $day) {
-        #print_r($day);
+    foreach($data[$i] as $day) {
         echo "kurssi: {$day['name']}<br>";
         echo "Kurssi tunnus: {$day['courseid']}<br>";
         echo "Aika: {$day['time']}<br>";

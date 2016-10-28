@@ -107,5 +107,6 @@ foreach($data as $day) {
     $i += 1;
 }
 
-print_r($odata);
+file_put_contents('data.array', serialize($odata));
+//print_r($odata);
 ?>
