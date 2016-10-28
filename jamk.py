@@ -22,30 +22,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from datetime import date
+import re
+import sys
+import json
 import requests
 from bs4 import BeautifulSoup
-from datetime import date
-from datetime import timedelta
-import re
-import argparse
 
 today = date.today()
-pvm= today.strftime("%y%m%d")
+pvm = today.strftime("%y%m%d")
 startPvm = today.replace(day=today.day - today.weekday()).strftime("%y%m%d")
 
-parser = argparse.ArgumentParser(description='Hakee JAMK lukujärjestyksen.')
-parser.add_argument('ryhma', metavar='Ryhmätunnus', help='Ryhmän tunnus')
-parser.add_argument('--json', action='store_true', help='Output in json')
-
-args = parser.parse_args()
-luokka = args.ryhma.upper()
+luokka = sys.argv[1]
 
 url='https://amp.jamk.fi/asio_v16/kalenterit2/index.php?av_v=1&av={1}{1}{1}&cluokka={0}&kt=lk&laji=%25%7C%7C%25&guest=%2Fasiakas12&lang=fin&ui=&yks=&apvm={2}&tiedot=kaikki&ss_ttkal=&ccv=&yhopt=&__cm=&b=1477646356&av_y=0&print=netti&outmode=excel_inline'.format(luokka,pvm,startPvm)
 
 r = requests.get(url)
-data = [[],[],[],[],[]]
-newData = {0: {},1: {},2: {},3: {},4: {}}
-days=["Maanantai","Tiistai","Keskiviikko", "Torstai", "Perjantai"]
+data = [[], [], [], [], []]
+newData = {0: {}, 1: {}, 2: {}, 3: {}, 4: {}}
 
 # Scrape data from https://amp.jamk.fi/asio/kalenterit2/index.php?guest=/asiakas12
 if r.status_code == 200:
@@ -63,35 +57,31 @@ if r.status_code == 200:
             i += 1
 
 # Parse data with regex
-prev=""
+prev = ""
 i = 0
-
 for day in data:
-    j=0
+    j = 0
     for lesson in day:
 
         if lesson == prev:
             continue
         else:
             prev = lesson
-            j+=1
+            j += 1
+
             time = re.search("\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2}", lesson).group(0)
             courseID = re.search("([A-Z]{4}\d{4})|LUMA|([A-Z]{5}\d{3})", lesson).group(0)
+
+            # Ottaa mukaan myös luokan tyypin
+            # room = re.search("([0-9]?[A-Z][0-9]_[A-Z][0-9]{3})\s([A-Z][a-z\s]+)", lesson).group(0)
             room = re.search("[0-9]?[A-Z][0-9]_[A-Z][0-9]{3}", lesson).group(0)
-            name = re.sub("(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s([A-Z]{4}\d{4}\.(\d\w){2}\d)", '',lesson)
-            name = re.sub("([0-9]?[A-z][0-9]_[A-Z][0-9]{3}).*\)",'', name).strip(' ')
 
-            newData[i][j] = {"time":time,"room":room,"name":name,"courseid":courseID}
-    i+=1
+            # TODO: Tämän voi tehdä paremminki
+            # Tämä etsii ajan ja tunnuksen rivin alusta ja poistaa ne
+            name = re.sub("(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s(([A-Z]{5}\d{3}\.(\d\w){2}\d)|LUMA|([A-Z]{4}\d{4}\.(\d\w){2}\d))", '', lesson)
+            # Tämä etsii luokan ja poistaa kaiken sen jälkeen tulevan rivin lopusta
+            name = re.sub("([0-9]?[A-z][0-9]_[A-Z][0-9]{3}).*\)", '', name).strip(' ')
+            newData[i][j] = {"time":time, "room":room, "name":name, "courseid":courseID}
+    i += 1
 
-# Output
-outputFormatted = ""
-for day in newData:
-    outputFormatted += "\n"+days[day] +"\n"
-    for n in newData[day]:
-        outputFormatted += newData[day][n]["name"]+", "+newData[day][n]["room"]+", "+newData[day][n]["time"]+"\n"
-
-if args.json:
-    print(newData)
-else:
-    print(outputFormatted)
+print(json.dumps(newData))
