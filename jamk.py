@@ -25,10 +25,13 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import date
+from datetime import timedelta
 import re
 import argparse
 
-pvm= date.today().strftime("%y%m%d")
+today = date.today()
+pvm= today.strftime("%y%m%d")
+startPvm = today.replace(day=today.day - today.weekday()).strftime("%y%m%d")
 
 parser = argparse.ArgumentParser(description='Hakee JAMK lukujärjestyksen.')
 parser.add_argument('ryhma', metavar='Ryhmätunnus', help='Ryhmän tunnus')
@@ -37,10 +40,9 @@ parser.add_argument('--json', action='store_true', help='Output in json')
 args = parser.parse_args()
 luokka = args.ryhma.upper()
 
-url='https://amp.jamk.fi/asio/kalenterit2/index.php?av_v=1&av=160315160315160315&cluokka={0}&kt=lk&laji=%25%7C%7C%25&guest=%2Fasiakas12&lang=fin&ui=&yks=&apvm={1}&tiedot=kaikki&ss_ttkal=&ccv=&yhopt=&__cm=&b=1458049311&av_y=0&print=netti&outmode=excel_inline'.format(luokka,pvm)
+url='https://amp.jamk.fi/asio_v16/kalenterit2/index.php?av_v=1&av={1}{1}{1}&cluokka={0}&kt=lk&laji=%25%7C%7C%25&guest=%2Fasiakas12&lang=fin&ui=&yks=&apvm={2}&tiedot=kaikki&ss_ttkal=&ccv=&yhopt=&__cm=&b=1477646356&av_y=0&print=netti&outmode=excel_inline'.format(luokka,pvm,startPvm)
 
 r = requests.get(url)
-
 data = [[],[],[],[],[]]
 newData = {0: {},1: {},2: {},3: {},4: {}}
 days=["Maanantai","Tiistai","Keskiviikko", "Torstai", "Perjantai"]
@@ -50,7 +52,7 @@ if r.status_code == 200:
     html = r.text
     soup = BeautifulSoup(html, 'html.parser')
     rows = soup.table.tbody.find_all('tr')
-    for tr in rows: 
+    for tr in rows:
         cols = tr.find_all('td')
         i = 0
         for td in cols:
@@ -63,17 +65,18 @@ if r.status_code == 200:
 # Parse data with regex
 prev=""
 i = 0
+
 for day in data:
     j=0
     for lesson in day:
-        
+
         if lesson == prev:
             continue
         else:
             prev = lesson
             j+=1
             time = re.search("\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2}", lesson).group(0)
-            courseID = re.search("[A-Z]{4}\d{4}", lesson).group(0)
+            courseID = re.search("([A-Z]{4}\d{4})|LUMA|([A-Z]{5}\d{3})", lesson).group(0)
             room = re.search("[0-9]?[A-Z][0-9]_[A-Z][0-9]{3}", lesson).group(0)
             name = re.sub("(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s([A-Z]{4}\d{4}\.(\d\w){2}\d)", '',lesson)
             name = re.sub("([0-9]?[A-z][0-9]_[A-Z][0-9]{3}).*\)",'', name).strip(' ')
