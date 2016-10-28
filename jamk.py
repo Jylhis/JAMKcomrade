@@ -22,8 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 import sys
-sys.path.append("python-deps/")
-
+sys.path.append("python-deps/requests-2.11.1/")
+sys.path.append("python-deps/beautifulsoup4-4.5.1/")
 from datetime import date
 import re
 
