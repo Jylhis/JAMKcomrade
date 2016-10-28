@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 # The MIT License (MIT)
 #
@@ -21,10 +21,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import sys
+sys.path.append("python-deps/")
 
 from datetime import date
 import re
-import sys
+
 import json
 import requests
 from bs4 import BeautifulSoup
@@ -84,4 +86,7 @@ for day in data:
             newData[i][j] = {"time":time, "room":room, "name":name, "courseid":courseID}
     i += 1
 
-print(json.dumps(newData))
+f = open("data.json", "w")
+f.write(json.dumps(newData))
+f.close()
+#print(json.dumps(newData))

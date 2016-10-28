@@ -22,10 +22,10 @@ for ($i = 0; $i < 5; $i++) {
     //print_r($json[$i]);
     foreach($json[$i] as $day) {
         #print_r($day);
-        echo "kurssi: {$day[name]}<br>";
-        echo "Kurssi tunnus: {$day[courseid]}<br>";
-        echo "Aika: {$day[time]}<br>";
-        echo "Luokka: {$day[room]}<br>";
+        echo "kurssi: {$day['name']}<br>";
+        echo "Kurssi tunnus: {$day['courseid']}<br>";
+        echo "Aika: {$day['time']}<br>";
+        echo "Luokka: {$day['room']}<br>";
         echo"<br>";
     }
 }
