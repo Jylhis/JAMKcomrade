@@ -1,3 +1,10 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Jamk juttu</title>
+  </head>
+<body>
 <?php
 $file = file_get_contents("data.json");
 $json = json_decode($file, true);
@@ -22,6 +29,7 @@ for ($i = 0; $i < 5; $i++) {
         echo"<br>";
     }
 }
-
-
 ?>
+
+  </body>
+</html>
