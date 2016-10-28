@@ -65,12 +65,14 @@ $i = 0;
 foreach($data as $day) {
     $j = 0;
     foreach($day as $lesson) {
-        if($lesson == $prev) {
-            continue;
-            echo "BULLSHIT";
+         if(strcmp($prev, $lesson) === 0) {
+             continue;
         } else {
+             
             $prev = $lesson;
             $j += 1;
+            print_r($lesson."
+");
 
             $timeP = '/\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2}/';
             $courseP = "/([A-Z]{4}\d{4})|LUMA|([A-Z]{5}\d{3})/";
@@ -83,7 +85,8 @@ foreach($data as $day) {
             $name = preg_split("/(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s(([A-Z]{5}\d{3}\.(\d\w){2}\d)|LUMA|([A-Z]{4}\d{4}\.(\d\w){2}\d))\W*/", $lesson);
             $name = preg_split("/([0-9]?[A-z][0-9]_[A-Z][0-9]{3}).*\)/", $name[1]);
             $name = $name[0];
-
+            print_r($name."
+");
             /*
             $vdata[$i][$j]["time"] = $$time;
             $vdata[$i][$j]["room"] = $room;
@@ -97,10 +100,11 @@ foreach($data as $day) {
                 "name" => $name,
                 "courseid" => $course
                 };*/
+            
         }
         $i += 1;
     }
 }
 
-print_r($data);
+//print_r($data);
 ?>
