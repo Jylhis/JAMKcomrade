@@ -1,3 +1,4 @@
+#!/bin/usr/php -q
 <?php
 /* The MIT License (MIT)
 
@@ -107,6 +108,6 @@ foreach($data as $day) {
     $i += 1;
 }
 
-file_put_contents('data.array', serialize($odata));
-//print_r($odata);
+//file_put_contents('data.array', serialize($odata));
+print_r(serialize($odata));
 ?>
