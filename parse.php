@@ -1,4 +1,4 @@
-#!/bin/usr/php -q
+#!/usr/bin/php -q
 <?php
 /* The MIT License (MIT)
 
