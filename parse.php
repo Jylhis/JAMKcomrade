@@ -113,5 +113,11 @@ foreach($data as $day) {
 }
 
 //file_put_contents('data.array', serialize($odata));
-print_r(serialize($odata));
+//print_r(serialize($odata));
+if (PHP_SAPI != 'cli') {
+    print_r(json_encode($odata));
+} else {
+    print_r(serialize($odata));
+}
+
 ?>
