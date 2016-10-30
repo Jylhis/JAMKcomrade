@@ -93,8 +93,8 @@ foreach($data as $day) {
 
             $timeP = '/\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2}/';
             $courseP = "/([A-Z]{4}\d{4})|LUMA|([A-Z]{5}\d{3})/";
-            $roomP = "/[0-9]?[A-Z][0-9]_[A-Z][0-9]{3}/";
-
+            // OLD $roomP = "/[0-9]?[A-Z][0-9]_[A-Z][0-9]{3}/";
+            $roomP = "/[A-Z]{1,2}[a-z]{0,1}[0-9]{1,2}_{0,1}[A-Z]{1,2}-{0,1}([0-9]{2,3}|[a-z]{3,4})_{0,1}([a-z\d]{1,6})*(\.\d|_\w*)*/";
             preg_match($timeP, $lesson, $time);
             preg_match($courseP, $lesson, $course);
             preg_match($roomP, $lesson, $room);
