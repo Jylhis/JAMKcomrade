@@ -1,4 +1,3 @@
-#!/usr/bin/php -q
 <?php
 /* The MIT License (MIT)
 
@@ -23,16 +22,21 @@
  SOFTWARE.
 */
 
-/* KÄYTTÖ
+/* Parametrit
    luokka=LUOKKATUNNUS
 */
 
-// Prepare
+// Parse cli arguments into $_GET
+if (PHP_SAPI == 'cli') {
+    parse_str(implode('&', array_slice($argv, 1)), $_GET);
+}
+
 if(isset($_GET['luokka'])) {
     $luokka = $_GET['luokka'];
 } else {
     $luokka = "TTV15S3";
 }
+
 date_default_timezone_set('Europe/Helsinki');
 $date = date('ymd');
 $fDate = date('ym') . date('d')-(date('N')-1);
