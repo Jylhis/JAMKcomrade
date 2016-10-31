@@ -9,3 +9,6 @@ Crontab:
 ```bash
 php-dom
 ```
+# TODO
+- Time format
+- correct times
