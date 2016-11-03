@@ -22,8 +22,11 @@
  SOFTWARE.
 */
 
-/* Parametrit
+/* Params
    luokka=LUOKKATUNNUS
+   
+   TODO
+   date=YYYYMMDD
 */
 
 // Parse cli arguments into $_GET
@@ -44,11 +47,11 @@ $fDate = date('ym') . date('d')-(date('N')-1);
 $url = "https://amp.jamk.fi/asio_v16/kalenterit2/index.php?av_v=1&av={$date}{$date}{$date}&cluokka={$luokka}&kt=lk&laji=%25%7C%7C%25&guest=%2Fasiakas12&lang=fin&ui=&yks=&apvm={$fDate}&tiedot=kaikki&ss_ttkal=&ccv=&yhopt=&__cm=&b=1477646356&av_y=0&print=netti&outmode=excel_inline";
 
 $data = array(
-    0 => array(),
-    1 => array(),
-    2 => array(),
-    3 => array(),
-    4 => array()
+    0 => array(), // Monday
+    1 => array(), // Tuesday
+    2 => array(), // Wednesday
+    3 => array(), // Thursday
+    4 => array()  // Friday
 );
 
 // Load HTML
@@ -56,50 +59,45 @@ $html = file_get_contents($url);
 $doc = new DOMDocument();
 $doc->loadHTML($html);
 
-// scrape data from html
+// Scrape data from html
 $tbody = $doc->getElementsByTagName('tbody');
 $rows = $tbody->item(0)->getElementsByTagName('tr');
 foreach($rows as $row) {
     $cols = $row->getElementsByTagName('td');
-    $i = 0;
-    foreach($cols as $col){
-        $div = $col->getElementsByTagName('div');
+    for($i = 0; $i < $cols->length; ++$i) {
+        $div = $cols->item($i)->getElementsByTagName('div');
         $span = $div->item(0)->getElementsByTagName('span');
         foreach($span as $txt) {
             array_push($data[$i], $txt->nodeValue);
         }
-        $i += 1;
     }
 }
 
+
 // Parse data with regex
 $prev = "";
-$i = 0;
-$odata = array(
-    0 => array(),
-    1 => array(),
-    2 => array(),
-    3 => array(),
-    4 => array()
-);
-foreach($data as $day) {
-    $j = 0;
-    foreach($day as $lesson) {
-         if(strcmp($prev, $lesson) === 0) {
+for($i = 0; $i < count($data); ++$i) {
+     for($j = 0; $j < count($data[$i]); ++$j) {
+        
+        if(strcmp($prev, $data[$i][$j]) === 0) {
              continue;
         } else {
-            $prev = $lesson;
-            $j += 1;
+            $prev = $data[$i][$j];
 
             $timeP = '/\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2}/';
             $courseP = "/([A-Z]{4}\d{4})|LUMA|([A-Z]{5}\d{3})/";
-            // OLD $roomP = "/[0-9]?[A-Z][0-9]_[A-Z][0-9]{3}/";
-            $roomP = "/[A-Z]{1,2}[a-z]{0,1}[0-9]{1,2}_{0,1}[A-Z]{1,2}-{0,1}([0-9]{2,3}|[a-z]{3,4})_{0,1}([a-z\d]{1,6})*(\.\d|_\w*)*/";
-            preg_match($timeP, $lesson, $time);
-            preg_match($courseP, $lesson, $course);
-            preg_match($roomP, $lesson, $room);
+            $roomP = "/[A-Z]{1,2}[a-z]{0,1}[0-9]{1,2}_{0,1}"
+                    ."[A-Z]{1,2}-{0,1}([0-9]{2,3}|[a-z]{3,4})"
+                    ."_{0,1}([a-z\d]{1,6})*(\.\d|_\w*)*/";
+                    
+            preg_match($timeP, $data[$i][$j], $time);
+            preg_match($courseP, $data[$i][$j], $course);
+            preg_match($roomP, $data[$i][$j], $room);
 
-            $name = preg_split("/(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s(([A-Z]{5}\d{3}\.(\d\w){2}\d)|LUMA|([A-Z]{4}\d{4}\.(\d\w){2}\d))\W*/", $lesson);
+            $name = preg_split("/(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s"
+                              ."(([A-Z]{5}\d{3}\.(\d\w){2}\d)|LUMA|([A-Z]{4}"
+                              ."\d{4}\.(\d\w){2}\d))\W*/", $data[$i][$j]);
+                              
             $name = preg_split("/([0-9]?[A-z][0-9]_[A-Z][0-9]{3}).*\)/", $name[1]);
             $name = $name[0];
 
@@ -109,11 +107,9 @@ foreach($data as $day) {
             $odata[$i][$j]["courseid"] = $course[0];
         }
     }
-    $i += 1;
 }
 
-//file_put_contents('data.array', serialize($odata));
-//print_r(serialize($odata));
+// Output
 if (PHP_SAPI != 'cli') {
     print_r(json_encode($odata));
 } else {

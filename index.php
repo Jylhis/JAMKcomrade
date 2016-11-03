@@ -16,9 +16,9 @@ $weekday = array(
     3 => "Torstai",
     4 => "Perjantai"
 );
-echo"<h1>TTV15S3</h1>";
+
 for ($i = 0; $i < 5; $i++) {
-    echo "<hr><h2>{$weekday[$i]}</h2>";
+    echo "<h2>{$weekday[$i]}</h2>";
     foreach($data[$i] as $day) {
         echo "kurssi: {$day['name']}<br>";
         echo "Kurssi tunnus: {$day['courseid']}<br>";
@@ -26,6 +26,7 @@ for ($i = 0; $i < 5; $i++) {
         echo "Luokka: {$day['room']}<br>";
         echo"<br>";
     }
+    echo "<hr>";
 }
 ?>
 
