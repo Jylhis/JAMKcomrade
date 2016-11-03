@@ -3,6 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>Lukkari</title>
+      <style>
+      body {
+          font-family: Sans-Serif;
+          background-color: #a63636;
+          color: white;
+       }
+       hr {
+           color: white;
+       }
+      </style>
   </head>
 <body>
 <?php
@@ -28,7 +38,12 @@ for ($i = 0; $i < 5; $i++) {
     }
     echo "<hr>";
 }
+echo "<script>" . file_get_contents("snowstorm-min.js") . "</script>";
 ?>
-
-  </body>
+    <script>
+     snowStorm.followMouse = false;
+     snowStorm.vMaxX = 3;
+     snowStorm.vMaxY = 3;
+    </script>
+</body>
 </html>
