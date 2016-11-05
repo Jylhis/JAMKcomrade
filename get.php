@@ -90,9 +90,14 @@ function Get($luokka, $week, $year = '2016') {
             }
         }
     }
+
+    // Output
     if(empty($odata)) {
         exit();
     } else {
+        if (!file_exists('cache')) {
+            mkdir('cache', 0744, true);
+        }
         // Output json
         if(isset($_GET['json'])) {
             print_r(json_encode($odata));
