@@ -70,11 +70,13 @@
         echo "Week: {$week} ";
 
         if ($week == 52) {
-            echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week=1&year={$nextyear}'>>></a></h1>";
+            echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week=1&year={$nextyear}'>>></a>";
 
         } else {
-            echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week={$nextweek}&year={$year}'>>></a></h1>";
+            echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week={$nextweek}&year={$year}'>>></a>";
         }
+
+        echo " Year: ".$year."</h1>";
 
         $cacheFile = "cache/" . $luokka . "-" . $week .'-'.$year;
         if(file_exists($cacheFile)) {
