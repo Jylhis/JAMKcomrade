@@ -67,7 +67,7 @@
             echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week={$lastweek}&year={$year}'><<</a>";
         }
 
-        echo "Week: {$week} ";
+        echo "Week: {$week}";
 
         if ($week == 52) {
             echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week=1&year={$nextyear}'>>></a>";
