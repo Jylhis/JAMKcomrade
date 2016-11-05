@@ -22,7 +22,7 @@
    SOFTWARE.
 */
 
-function Get($luokka, $week, $year = '2016') {
+function Get($luokka, $week, $year) {
     date_default_timezone_set('Europe/Helsinki');
     $date = new DateTime();
     $date = $date->setISODate($year, $week)->format('ymd');
@@ -93,11 +93,13 @@ function Get($luokka, $week, $year = '2016') {
 
     // Output
     if(empty($odata)) {
-        exit();
+        return;
     } else {
+        // FIXME: Cache dir
         if (!file_exists('cache')) {
             mkdir('cache', 0744, true);
         }
+
         // Output json
         if(isset($_GET['json'])) {
             print_r(json_encode($odata));
@@ -123,7 +125,7 @@ function Get($luokka, $week, $year = '2016') {
                     echo"<br>";
                 }
             }
-            file_put_contents('cache/'.$luokka.'-'.$week, ob_get_contents());
+            file_put_contents('cache/'.$luokka.'-'.$week .'-'. $year, ob_get_contents());
             ob_end_clean();
         }
     }
