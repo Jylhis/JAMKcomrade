@@ -1,15 +1,7 @@
 # Lukkari
-0.2.0
-
-Crontab:
-```
-0 1 * * 1 /path/to/cron.sh
-```
+0.3.0
 
 # Install
 ```bash
 php-dom
 ```
-# TODO
-- Time format
-- correct times
