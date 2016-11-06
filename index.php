@@ -27,9 +27,7 @@
 <head>
 <meta charset="utf-8">
 <title>Lukkari</title>
-<?php
-echo "<link rel='icon' href='data:;base64,".file_get_contents("favicon.base64")."'>";
-?>
+<link rel="icon" type="image/png" href="favicon.png">
 <style><?php echo preg_replace('/(\n)|(\s{4})/','',file_get_contents("style.css")) ?></style>
 </head>
 <body>
