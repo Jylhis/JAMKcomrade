@@ -7,4 +7,5 @@ php-dom
 ```
 
 # TODO
-- Create cache folder with right permissions
+- Create cache folder permissions
+- Remove old and unused cache files
