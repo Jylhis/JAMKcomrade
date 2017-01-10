@@ -55,7 +55,8 @@ if($WinterTheme) {
 
         date_default_timezone_set('Europe/Helsinki');
         if(isset($_GET['week']) && $_GET['week']>0 && $_GET['week']<=52) {
-            $week = $_GET['week'];
+            //$week = $_GET['week'];
+            $week = sprintf("%02d",$_GET['week']);
         } else {
             $week = date('W');
         }
@@ -94,6 +95,7 @@ if($WinterTheme) {
 
         echo " Year: ".$year."</h1>";
 
+// Check date
 if ($year<date("Y")-1 || $year>date("Y")+1) {
     echo "Year must be between ".(date("Y")-1)."-".(date("Y")+1);
     return;
