@@ -170,12 +170,20 @@ function Get($luokka, $week, $year) {
                 preg_match($courseP, $data[$i][$j], $course);
                 preg_match($roomP, $data[$i][$j], $room);
 
+
+                //$name = preg_split("/(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s"
+                //                  ."(([A-Z]{5}\d{3}\.(\d\w){2}\d)|LUMA|([A-Z]{4}"
+                //                  ."\d{4}\.(\d\w){2}\d))\W*/", $data[$i][$j]);
+
                 $name = preg_split("/(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s"
-                                  ."(([A-Z]{5}\d{3}\.(\d\w){2}\d)|LUMA|([A-Z]{4}"
-                                  ."\d{4}\.(\d\w){2}\d))\W*/", $data[$i][$j]);
+                                   ."(([A-Z]{4,5}\d{3,4}\.\d\w(\d|\w)\w\d)|LUMA){0,1}\W*/",
+                                   $data[$i][$j]);
 
                 $name = preg_split("/([0-9]?[A-z][0-9]_[A-Z][0-9]{3}).*\)/", $name[1]);
+                // if(empty($name[1])) print_r($name);
                 $name = $name[0];
+
+                if(empty($name[0])) print_r($name);
 
                 $odata[$i][$j]["time"] = $time[0];
                 $odata[$i][$j]["room"] = $room[0];
