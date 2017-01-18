@@ -20,14 +20,14 @@
    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE.
- */
+*/
 ?>
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Lukkari</title>
-<link rel="icon" type="image/png" href="favicon.png">
+    <head>
+    <meta charset="utf-8">
+    <title>Lukkari</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <?php
      $WinterTheme = false;
 
@@ -202,11 +202,6 @@ function Get($luokka, $week, $year) {
         file_put_contents('cache/'.$luokka.'-'.$week .'-'. $year, "No data!");
         return;
     } else {
-
-        // Output json
-        if(isset($_GET['json'])) {
-            print_r(json_encode($odata));
-        } else {
             // HTML
             $weekday = array(
                 0 => "Maanantai",
@@ -230,7 +225,6 @@ function Get($luokka, $week, $year) {
             }
             file_put_contents('cache/'.$luokka.'-'.$week .'-'. $year, ob_get_contents());
             ob_end_clean();
-        }
     }
 }
 ?>
