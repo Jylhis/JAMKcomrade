@@ -25,7 +25,7 @@
 <!doctype html>
 <html lang="fi">
 <head>
-<meta charset="utf-8">
+    <meta charset="utf-8">
     <title>Ruoka</title>
     <meta name=viewport content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="favicon.png">
