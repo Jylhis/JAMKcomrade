@@ -1,4 +1,7 @@
-html {
+* {
     font-family: sans-serif;
 }
 
+body > h1 {
+    max-width: 90%;
+}

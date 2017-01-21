@@ -26,8 +26,9 @@
 <html lang="fi">
 <head>
 <meta charset="utf-8">
-      <title>Ruoka</title>
-<link rel="icon" type="image/png" href="favicon.png">
+    <title>Ruoka</title>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="favicon.png">
      <?php
     $WinterTheme = false;
 
@@ -75,7 +76,7 @@ if($week == 1) {
     echo "<a href='{$_SERVER['PHP_SELF']}?week={$lastweek}&year={$year}'><<</a>";
 }
 
-echo "Week: {$week}";
+echo "Week:{$week}";
 
 if ($week == 52) {
     echo "<a href='{$_SERVER['PHP_SELF']}?week=1&year={$nextyear}'>>></a>";
@@ -84,7 +85,7 @@ if ($week == 52) {
     echo "<a href='{$_SERVER['PHP_SELF']}?week={$nextweek}&year={$year}'>>></a>";
 }
 
-echo " Year: ".$year."</h1>";
+echo " Year:".$year."</h1>";
 
 // Check date
 if ($year!=date("Y")) {

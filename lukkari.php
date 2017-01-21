@@ -26,6 +26,7 @@
 <html lang="fi">
     <head>
     <meta charset="utf-8">
+    <meta name=viewport content="width=device-width, initial-scale=1">
     <title>Lukkari</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <?php
@@ -43,7 +44,6 @@ echo preg_replace('/(\n)|(\s{4})/','',file_get_contents("winterstyle.css"));
     echo preg_replace('/(\n)|(\s{4})/','',file_get_contents("style.css"));
 }
 echo"</style></head><body>";
-
 
 
 if($WinterTheme) {
@@ -83,7 +83,7 @@ if($week == 1) {
     echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week={$lastweek}&year={$year}'><<</a>";
 }
 
-echo "Week: {$week}";
+echo "Week:{$week}";
 
 if ($week == 52) {
     echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week=1&year={$nextyear}'>>></a>";
@@ -92,7 +92,7 @@ if ($week == 52) {
     echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week={$nextweek}&year={$year}'>>></a>";
 }
 
-echo " Year: ".$year."</h1>";
+echo " Year:".$year."</h1>";
 
 // Check date
 if ($year<date("Y")-1 || $year>date("Y")+1) {
