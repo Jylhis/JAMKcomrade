@@ -36,14 +36,13 @@ if(date('n')==12)
 {
     $WinterTheme = true;
 }
-echo '<style>';
 if($WinterTheme)
 {
-echo preg_replace('/(\n)|(\s{4})/','',file_get_contents("winterstyle.css"));
+    echo "<link rel='stylesheet' href='winterstyle.css'>";
 } else {
-    echo preg_replace('/(\n)|(\s{4})/','',file_get_contents("style.css"));
+     echo "<link rel='stylesheet' href='style.css'>";
 }
-echo"</style></head><body>";
+echo"</head><body>";
 
 
 if($WinterTheme) {
@@ -108,9 +107,10 @@ if(file_exists($cacheFile)) {
 }
 if($WinterTheme) {
     echo "<script>" . file_get_contents("snowstorm-min.js") . "</script>";
+    echo "<script>snowStorm.followMouse = false;snowStorm.vMaxX = 3;snowStorm.vMaxY = 3;</script>";
 }
 ?>
-<script>snowStorm.followMouse = false;snowStorm.vMaxX = 3;snowStorm.vMaxY = 3;</script>
+
 </body>
 </html>
 <?php
