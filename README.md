@@ -5,6 +5,11 @@
 ```bash
 php-dom
 ```
+Permission
+```bash
+sudo chown www-data. $FOLDER
+```
+
 ### APC
 ```bash
 apt-get install php-pear php7.0-dev make libpcre3-dev
