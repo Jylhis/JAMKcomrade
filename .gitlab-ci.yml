@@ -17,4 +17,5 @@ deploy:
   script:
    # - rsync -az --delete public/* $PROD_USER@$PROD_HOST:/var/www/html/jamk
    - curl -X POST -F id=$PASS -F dir=jamk $PROD_HOST
-  only: master
+  only:
+     - master
