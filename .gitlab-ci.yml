@@ -7,6 +7,7 @@ stages:
 prepare:
   stage: prepare
   script:
+    - apt-get install -qq --yes curl
     - echo "Here remove all useless etc."
     - rm README.md
     - mkdir cache
@@ -15,7 +16,7 @@ prepare:
 deploy:
   stage: deploy
   script:
-   # - rsync -az --delete public/* $PROD_USER@$PROD_HOST:/var/www/html/jamk
-   - curl -X POST -F id=$PASS -F dir=jamk $PROD_HOST
+    # - rsync -az --delete public/* $PROD_USER@$PROD_HOST:/var/www/html/jamk
+    - curl -X POST -F id=$PASS -F dir=jamk $PROD_HOST
   only:
-     - master
+    - master
