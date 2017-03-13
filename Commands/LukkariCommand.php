@@ -63,7 +63,7 @@ class LukkariCommand extends UserCommand
         // Proccess data
         $text = str_replace("<hr>", "", $text);
         $text = str_replace("<h2>", "<b>", $text);
-        $text = str_replace("</h2>", "</b>", $text);
+        $text = str_replace("</h2>", "</b>\n", $text);
         $text = str_replace("<br>", "\n", $text);
 
         $data = [
