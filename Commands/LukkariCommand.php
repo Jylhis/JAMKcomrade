@@ -49,7 +49,7 @@ class LukkariCommand extends UserCommand
         $luokka = "TTV15S3";
 
         if(!empty($text)) {
-            $luokka = $text;
+            $luokka = strtoupper($text);
         }
 
         $cacheFile = __DIR__ . "/../cache/" . $luokka . "-" . $week .'-'.$year;

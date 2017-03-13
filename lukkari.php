@@ -59,7 +59,7 @@ require __DIR__ . '/getLukkari.php';
             $year = date('Y');
         }
         if(isset($_GET['luokka'])) {
-            $luokka = $_GET['luokka'];
+            $luokka = strtoupper($_GET['luokka']);
         } else {
             $luokka = "TTV15S3";
         }

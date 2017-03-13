@@ -4,6 +4,7 @@ function Get($luokka, $week, $year) {
 
     $date = new DateTime();
     $date = $date->setISODate($year, $week)->format('ymd');
+    $luokka = strtoupper($luokka);
 
     $url = "https://amp.jamk.fi/asio_v16/kalenterit2/index.php?av_v=1&av={$date}{$date}{$date}&cluokka={$luokka}&kt=lk&laji=%25%7C%7C%25&guest=%2Fasiakas12&lang=fin&ui=&yks=&apvm={$date}&tiedot=kaikki&ss_ttkal=&ccv=&yhopt=&__cm=&b=1477646356&av_y=0&print=netti&outmode=excel_inline";
 

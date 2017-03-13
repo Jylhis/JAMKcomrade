@@ -18,6 +18,7 @@ pecl install apc
 Add `extension = apc.so` to bottom of`/etc/php/7.0/apache2/php.ini`
 
 # TODO
+- InlineQuery (Dates?)
 - Delete "No data!" entries daily
 - APC
 - lukkari max distance half a year.
