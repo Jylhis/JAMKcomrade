@@ -99,7 +99,7 @@ function Get($luokka, $week, $year) {
                 echo "<hr>";
                 echo "<h2>{$weekday[$i]}</h2>";
                 foreach($odata[$i] as $day) {
-                    echo "kurssi: {$day['name']}<br>";
+                    echo "Kurssi: {$day['name']}<br>";
                     echo "Kurssi tunnus: {$day['courseid']}<br>";
                     echo "Aika: {$day['time']}<br>";
                     echo "Luokka: {$day['room']}<br>";
