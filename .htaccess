@@ -2,3 +2,4 @@
 RewriteCond %{SCRIPT_FILENAME} -d [OR]
 RewriteCond %{SCRIPT_FILENAME} -f
 RewriteRule "(^|/)\." - [F]
+RewriteRule ^/?sethook\.php$ - [F,L]

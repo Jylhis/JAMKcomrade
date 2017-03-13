@@ -3,3 +3,7 @@ __pycache__
 data.json
 data.array
 cache/
+
+composer.phar
+/vendor/
+
