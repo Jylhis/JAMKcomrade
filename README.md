@@ -5,8 +5,7 @@ Webpage & Telegrambot
 
 Dependencies:
 
-- php-pecl-apcu(fedora) / php-apcu(ubuntu)
-- php
+- php-pecl-apcu (fedora) / php-apcu (ubuntu)
 
 ```bash
 composer install --no-dev
