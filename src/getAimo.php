@@ -62,38 +62,35 @@ function GetAimo($week, $year) {
     }
 
     // Output
-    if (!file_exists('cache')) {
-        mkdir('cache', 0744, true);
-    }
 
     if(empty($odata)) {
-        file_put_contents('cache/aimo-'.$week .'-'. $year, "No data!");
+        apcu_add("Aimo-".$week.'-'.$year, false, 54000);
         return;
     } else {
-
         $weekday = array(
-            0 => "Maanantai",
-            1 => "Tiistai",
-            2 => "Keskiviikko",
-            3 => "Torstai",
-            4 => "Perjantai"
+            "Maanantai" => array(),
+            "Tiistai" => array(),
+            "Keskiviikko" => array(),
+            "Torstai" => array(),
+            "Perjantai" => array()
         );
 
-        ob_start();
-        for ($i = 0; $i < 5; $i++) {
-            echo "<hr>";
-            echo "<h2>{$weekday[$i]}</h2>";
+        $i=0;
+        foreach($weekday as $key => $value) {
             foreach($odata[$i] as $day) {
-                echo "Ruoka: {$day[0]}<br>";
-                echo "Hinta: {$day[1]}<br>";
-                echo "Ruokainekset: ";
+                $courseData = array(
+                    "Ruoka" => $day[0],
+                    "Hinta" => $day[1],
+                    "Ruokainekset" => array()
+                );
                 foreach($day[2] as $comps) {
-                    echo $comps." ";
+                    array_push($courseData["Ruokainekset"], $comps);
                 }
-                echo"<br><br>";
+                array_push($weekday[$key], $courseData);
             }
+            ++$i;
         }
-        file_put_contents('cache/aimo-'.$week .'-'. $year, ob_get_contents());
-        ob_end_clean();
+        apcu_add("Aimo-".$week.'-'.$year, $weekday, 2628000); // 1 month
+
     }
 }

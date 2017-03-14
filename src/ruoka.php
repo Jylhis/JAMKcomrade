@@ -93,11 +93,45 @@ require __DIR__ . '/getAimo.php';
             return;
         }
 
-        $cacheFile = "cache/aimo-" . $week .'-'.$year;
-        if(!file_exists($cacheFile)) {
-            echo GetAimo($week, $year);
+
+        $cache = "Aimo-" . $week .'-'.$year;
+
+        if(!apcu_exists($cache."-HTML")) {
+            if(!apcu_exists($cache)) {
+                echo GetAimo($week, $year);
+            }
+            $datas = apcu_fetch($cache);
+
+            if($datas == false)
+            {
+                echo "No Data!";
+            }
+            else {
+                ob_start();
+                foreach($datas as $key => $value) {
+                    echo "<hr><h2>".$key."</h2>"; // Weekday
+                    foreach($value as $data) {
+                        foreach($data as $key => $value) {
+
+                            if(strcmp($key, "Ruokainekset")==0) {
+                                //print_r($value);
+                                echo $key.":";
+                                foreach($value as $key => $value) {
+                                    echo " ".$value;
+                                }
+                                echo "<br><br>";
+                            } else {
+                                echo $key.": ".$value."<br>";
+                            }
+
+                        }
+                    }
+                }
+                apcu_add($cache."-HTML", ob_get_contents(), 2628000);
+                ob_end_clean();
+            }
         }
-        echo file_get_contents($cacheFile);
+        echo apcu_fetch($cache."-HTML");
 
         if($WinterTheme) {
             echo "<script>" . file_get_contents("snowstorm-min.js") . "</script>";
