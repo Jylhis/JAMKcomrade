@@ -1,4 +1,11 @@
 # Lukkari
 Webpage & Telegrambot
 
-`composer install --no-dev`
+# Installation
+Dependencies:
+- php-pecl-apcu
+- php
+
+```bash
+composer install --no-dev
+```

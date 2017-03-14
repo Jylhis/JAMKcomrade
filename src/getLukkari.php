@@ -44,7 +44,8 @@ function Get($luokka, $week, $year) {
     $doc = new \DOMDocument();
     $doc->loadHTML($html);
 
-    // Scrape data from html
+
+        // Scrape data from html
     $tbody = $doc->getElementsByTagName('tbody');
     $rows = $tbody->item(0)->getElementsByTagName('tr');
     foreach($rows as $row) {
@@ -102,35 +103,32 @@ function Get($luokka, $week, $year) {
     }
 
     // Output
-    if (!file_exists('cache')) {
-        mkdir('cache', 0744, true);
-    }
-
     if(empty($odata)) {
-        file_put_contents('cache/'.$luokka.'-'.$week .'-'. $year, "No data!");
+        apcu_add($luokka.'-'.$week.'-'.$year, false, 54000);
         return;
     } else {
         $weekday = array(
-            0 => "Maanantai",
-            1 => "Tiistai",
-            2 => "Keskiviikko",
-            3 => "Torstai",
-            4 => "Perjantai"
+            "Maanantai" => array(),
+            "Tiistai" => array(),
+            "Keskiviikko" => array(),
+            "Torstai" => array(),
+            "Perjantai" => array()
         );
 
-        ob_start();
-        for ($i = 0; $i < 5; $i++) {
-            echo "<hr>";
-            echo "<h2>{$weekday[$i]}</h2>";
-            foreach($odata[$i] as $day) {
-                echo "Kurssi: {$day['name']}<br>";
-                echo "Kurssi tunnus: {$day['courseid']}<br>";
-                echo "Aika: {$day['time']}<br>";
-                echo "Luokka: {$day['room']}<br>";
-                echo"<br>";
+        //for ($i = 0; $i < 5; $i++) {
+        $i=0;
+        foreach($weekday as $key => $value) {
+            foreach($odata[$i] as $course) {
+                $courseData = array(
+                    "Kurssi" => $course['name'],
+                    "Tunnus" => $course['courseid'],
+                    "Aika" => $course['time'],
+                    "Luokka" => $course['room'],
+                );
+                array_push($weekday[$key], $courseData);
             }
+            ++$i;
         }
-        file_put_contents('cache/'.$luokka.'-'.$week .'-'. $year, ob_get_contents());
-        ob_end_clean();
+        apcu_add($luokka.'-'.$week.'-'.$year, $weekday, 2628000); // 1 month
     }
 }

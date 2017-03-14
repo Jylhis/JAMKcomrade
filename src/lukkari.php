@@ -95,11 +95,37 @@ require __DIR__ . '/getLukkari.php';
             return;
         }
 
-        $cacheFile = "cache/" . $luokka . "-" . $week .'-'.$year;
-        if(!file_exists($cacheFile)) {
-            echo Get($luokka, $week, $year);
+        $cache = $luokka . "-" . $week .'-'.$year;
+
+        if(!apcu_exists($cache."-HTML")) {
+            if(!apcu_exists($cache)) {
+                echo Get($luokka, $week, $year);
+            }
+            $datas = apcu_fetch($cache);
+
+            if($datas == false)
+            {
+                echo "No Data!";
+            }
+            else {
+                ob_start();
+                foreach($datas as $key => $value) {
+                    echo "<hr><h2>".$key."</h2>";
+                    foreach($value as $data) {
+                        foreach($data as $key => $value) {
+                            echo $key.": ".$value."<br>";
+                            if(strcmp($key, "Luokka")==0) {
+                                echo "<br>";
+                            }
+                        }
+                    }
+                }
+                apcu_add($cache."-HTML", ob_get_contents(), 2628000);
+                ob_end_clean();
+            }
         }
-        echo file_get_contents($cacheFile);
+        echo apcu_fetch($cache."-HTML");
+
 
         if($WinterTheme) {
             echo "<script>" . file_get_contents("snowstorm-min.js") . "</script>";
