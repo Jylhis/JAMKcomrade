@@ -1,0 +1,5 @@
+<?php
+// Remove '.example' from file name
+$API_KEY = '****************';
+$BOT_NAME = '**********';
+$hook_url = 'http://****.**';

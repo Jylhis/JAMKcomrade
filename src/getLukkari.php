@@ -1,8 +1,31 @@
 <?php
+/* The MIT License (MIT)
+
+   Copyright (c) 2016 Markus Jylhänkangas
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+ */
+namespace JAMKcomrade;
 
 function Get($luokka, $week, $year) {
 
-    $date = new DateTime();
+    $date = new \DateTime();
     $date = $date->setISODate($year, $week)->format('ymd');
     $luokka = strtoupper($luokka);
 
@@ -18,7 +41,7 @@ function Get($luokka, $week, $year) {
 
     // Load HTML
     $html = file_get_contents($url);
-    $doc = new DOMDocument();
+    $doc = new \DOMDocument();
     $doc->loadHTML($html);
 
     // Scrape data from html
@@ -61,7 +84,7 @@ function Get($luokka, $week, $year) {
                 //                  ."\d{4}\.(\d\w){2}\d))\W*/", $data[$i][$j]);
 
                 $name = preg_split("/(\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2})\s"
-                                   ."(([A-Z]{4,5}\d{3,4}\.\d\w(\d|\w)\w\d)|LUMA){0,1}\W*/",
+                                  ."(([A-Z]{4,5}\d{3,4}\.\d\w(\d|\w)\w\d)|LUMA){0,1}\W*/",
                                    $data[$i][$j]);
 
                 $name = preg_split("/([0-9]?[A-z][0-9]_[A-Z][0-9]{3}).*\)/", $name[1]);
@@ -80,34 +103,34 @@ function Get($luokka, $week, $year) {
 
     // Output
     if (!file_exists('cache')) {
-            mkdir('cache', 0744, true);
-        }
+        mkdir('cache', 0744, true);
+    }
 
     if(empty($odata)) {
         file_put_contents('cache/'.$luokka.'-'.$week .'-'. $year, "No data!");
         return;
     } else {
-            $weekday = array(
-                0 => "Maanantai",
-                1 => "Tiistai",
-                2 => "Keskiviikko",
-                3 => "Torstai",
-                4 => "Perjantai"
-            );
+        $weekday = array(
+            0 => "Maanantai",
+            1 => "Tiistai",
+            2 => "Keskiviikko",
+            3 => "Torstai",
+            4 => "Perjantai"
+        );
 
-            ob_start();
-            for ($i = 0; $i < 5; $i++) {
-                echo "<hr>";
-                echo "<h2>{$weekday[$i]}</h2>";
-                foreach($odata[$i] as $day) {
-                    echo "Kurssi: {$day['name']}<br>";
-                    echo "Kurssi tunnus: {$day['courseid']}<br>";
-                    echo "Aika: {$day['time']}<br>";
-                    echo "Luokka: {$day['room']}<br>";
-                    echo"<br>";
-                }
+        ob_start();
+        for ($i = 0; $i < 5; $i++) {
+            echo "<hr>";
+            echo "<h2>{$weekday[$i]}</h2>";
+            foreach($odata[$i] as $day) {
+                echo "Kurssi: {$day['name']}<br>";
+                echo "Kurssi tunnus: {$day['courseid']}<br>";
+                echo "Aika: {$day['time']}<br>";
+                echo "Luokka: {$day['room']}<br>";
+                echo"<br>";
             }
-            file_put_contents('cache/'.$luokka.'-'.$week .'-'. $year, ob_get_contents());
-            ob_end_clean();
+        }
+        file_put_contents('cache/'.$luokka.'-'.$week .'-'. $year, ob_get_contents());
+        ob_end_clean();
     }
 }

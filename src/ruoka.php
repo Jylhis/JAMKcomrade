@@ -21,7 +21,7 @@
    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE.
  */
-
+namespace JAMKcomrade;
 require __DIR__ . '/getAimo.php';
 ?>
 <!doctype html>

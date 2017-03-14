@@ -53,7 +53,6 @@ class LukkariCommand extends UserCommand
         }
 
         $cacheFile = __DIR__ . "/../cache/" . $luokka . "-" . $week .'-'.$year;
-        //$cacheFile = __DIR__ . "/../cache/asdf";
 
         if(file_exists($cacheFile)==1) {
             Get($luokka, $week, $year);

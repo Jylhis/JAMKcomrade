@@ -22,6 +22,7 @@
    SOFTWARE.
  */
 
+namespace JAMKcomrade;
 require __DIR__ . '/getLukkari.php';
 ?>
 <!doctype html>

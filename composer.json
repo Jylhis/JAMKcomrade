@@ -1,8 +1,31 @@
 {
-    "name": "JamkBot",
-    "type": "project",
-    "require": {
-        "php": ">=5.5.0",
-        "longman/telegram-bot": "*"
+  "name": "jylhis/jamkcomrade",
+  "type": "project",
+  "license": "MIT",
+  "homepage": "https://www.jylhis.com/jamk",
+  "authors": [
+    {
+      "name": "Markus Jylhänkangas",
+      "email": "markus@jylhis.com",
+      "homepage": "https://www.jylhis.com",
+      "role": "Developer"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Jylhis\\JAMKcomrade\\": "src/"
+    }
+  },
+  "autoload-dev": {
+        "psr-4": {
+            "Jylhis\\JAMKcomrade\\Tests\\Unit\\": "tests/unit"
+        }
+  },
+  "require": {
+    "php": ">=5.5.0",
+    "longman/telegram-bot": "*"
+  },
+  "require-dev": {
+        "phpunit/phpunit": "~4.8",
+  }
 }
