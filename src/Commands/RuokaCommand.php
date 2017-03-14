@@ -26,10 +26,12 @@ namespace Longman\TelegramBot\Commands\UserCommands;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Request;
 
+require __DIR__ . '/../getAimo.php';
+
 class RuokaCommand extends UserCommand
 {
     protected $name = 'ruoka';
-    protected $description = 'Tämänpäivän ruoka aimossa';
+    protected $description = 'Tämän päivän ruoka aimossa';
     protected $usage = '/ruoka';
     protected $version = '0.1';
 
@@ -40,13 +42,55 @@ class RuokaCommand extends UserCommand
         $chat_id = $message->getChat()->getId();
         $text = $message->getText(true);
 
+        date_default_timezone_set('Europe/Helsinki');
+        $week = date('W');
+        $year = date('Y');
+        $wday = date('N')-1;
 
-        $text = 'RUOKAA!!';
+
+        $cache = "Aimo-" . $week .'-'.$year;
+        if(!apcu_exists($cache."-".$wday."-TELEGRAM")) {
+            if(!apcu_exists($cache)) {
+                \JAMKcomrade\GetAimo($week, $year);
+            }
+            $datas = apcu_fetch($cache);
+
+            if($datas == false)
+            {
+                echo "No Data!";
+            }
+            else {
+                $tmpDay = array_slice($datas, $wday, 1);
+
+                ob_start();
+                foreach($tmpDay as $key => $value) {
+                    echo "<b>".$key."</b>\n"; // Weekday
+                    foreach($value as $data) {
+                        foreach($data as $key => $value) {
+                            if(strcmp($key, "Ruokainekset")==0) {
+                                //print_r($value);
+                                echo $key.":";
+                                foreach($value as $key => $value) {
+                                    echo " ".$value;
+                                }
+                                echo "\n\n";
+                            } else {
+                                echo $key.": ".$value."\n";
+                            }
+
+                        }
+                    }
+                }
+                apcu_add($cache."-".$wday."-TELEGRAM", ob_get_contents(), 2628000);
+                ob_end_clean();
+            }
+        }
+        $text = apcu_fetch($cache."-".$wday."-TELEGRAM");
 
 
         $data = [
             'chat_id' => $chat_id,
-            // 'disable_notification' => false,
+            'parse_mode' => 'HTML',
             'reply_to_message_id' => $message_id,
             'text'    => $text,
         ];
