@@ -45,7 +45,7 @@ function Get($luokka, $week, $year) {
     $doc->loadHTML($html);
 
 
-        // Scrape data from html
+    // Scrape data from html
     $tbody = $doc->getElementsByTagName('tbody');
     $rows = $tbody->item(0)->getElementsByTagName('tr');
     foreach($rows as $row) {
@@ -115,7 +115,6 @@ function Get($luokka, $week, $year) {
             "Perjantai" => array()
         );
 
-        //for ($i = 0; $i < 5; $i++) {
         $i=0;
         foreach($weekday as $key => $value) {
             foreach($odata[$i] as $course) {

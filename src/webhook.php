@@ -22,9 +22,9 @@
    SOFTWARE.
  */
 
-namespace JAMKcomrade;
+//namespace JAMKcomrade;
 // Load composer
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/../config/config.php';
 
 $COMMANDS_FOLDER = __DIR__.'/Commands/';

@@ -46,24 +46,45 @@ class LukkariCommand extends UserCommand
         date_default_timezone_set('Europe/Helsinki');
         $week = date('W');
         $year = date('Y');
+        $wday = date('N')-1;
         $luokka = "TTV15S3";
 
         if(!empty($text)) {
             $luokka = strtoupper($text);
         }
 
-        $cacheFile = __DIR__ . "/../cache/" . $luokka . "-" . $week .'-'.$year;
 
-        if(file_exists($cacheFile)==1) {
-            Get($luokka, $week, $year);
+        $cache = $luokka . "-" . $week .'-'.$year;
+        if(!apcu_exists($cache."-TELEGRAM")) {
+            if(!apcu_exists($cache)) {
+                echo Get($luokka, $week, $year);
+            }
+            $datas = apcu_fetch($cache);
+
+            if($datas == false)
+            {
+                echo "No Data!";
+            }
+            else {
+                ob_start();
+                $tmpDay = array_values($datas);
+
+                foreach($tmpDay[$wday] as $key => $value) {
+                    echo "<b>".$key."</b>";
+                    foreach($value as $data) {
+                        foreach($data as $key => $value) {
+                            echo $key.": ".$value."\n";
+                            if(strcmp($key, "Luokka")==0) {
+                                echo "\n";
+                            }
+                        }
+                    }
+                }
+                apcu_add($cache."-TELEGRAM", ob_get_contents(), 2628000);
+                ob_end_clean();
+            }
         }
-        $text = file_get_contents($cacheFile);
-
-        // Proccess data
-        $text = str_replace("<hr>", "", $text);
-        $text = str_replace("<h2>", "<b>", $text);
-        $text = str_replace("</h2>", "</b>\n", $text);
-        $text = str_replace("<br>", "\n", $text);
+        echo apcu_fetch($cache."-TELEGRAM");
 
         $data = [
             'chat_id' => $chat_id,

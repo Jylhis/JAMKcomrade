@@ -5,5 +5,5 @@ data.array
 cache/
 *.log
 composer.phar
-/vendor/
+vendor/
 config/config.php

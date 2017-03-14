@@ -2,8 +2,10 @@
 Webpage & Telegrambot
 
 # Installation
+
 Dependencies:
-- php-pecl-apcu
+
+- php-pecl-apcu(fedora) / php-apcu(ubuntu)
 - php
 
 ```bash
