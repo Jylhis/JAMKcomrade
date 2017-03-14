@@ -53,11 +53,10 @@ class LukkariCommand extends UserCommand
             $luokka = strtoupper($text);
         }
 
-
         $cache = $luokka . "-" . $week .'-'.$year;
-        if(!apcu_exists($cache."-TELEGRAM")) {
+        if(!apcu_exists($cache."-".$wday."-TELEGRAM")) {
             if(!apcu_exists($cache)) {
-                echo Get($luokka, $week, $year);
+                \JAMKcomrade\Get($luokka, $week, $year);
             }
             $datas = apcu_fetch($cache);
 
@@ -67,10 +66,10 @@ class LukkariCommand extends UserCommand
             }
             else {
                 ob_start();
-                $tmpDay = array_values($datas);
+                $tmpDay = array_slice($datas, $wday, 1);
 
-                foreach($tmpDay[$wday] as $key => $value) {
-                    echo "<b>".$key."</b>";
+                foreach($tmpDay as $key => $value) {
+                    echo "<b>".$key."</b>\n\n";
                     foreach($value as $data) {
                         foreach($data as $key => $value) {
                             echo $key.": ".$value."\n";
@@ -80,11 +79,11 @@ class LukkariCommand extends UserCommand
                         }
                     }
                 }
-                apcu_add($cache."-TELEGRAM", ob_get_contents(), 2628000);
+                apcu_add($cache."-".$wday."-TELEGRAM", ob_get_contents(), 2628000);
                 ob_end_clean();
             }
         }
-        echo apcu_fetch($cache."-TELEGRAM");
+        $text = apcu_fetch($cache."-".$wday."-TELEGRAM");
 
         $data = [
             'chat_id' => $chat_id,
