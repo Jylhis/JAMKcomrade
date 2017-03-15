@@ -64,7 +64,6 @@ class RuokaCommand extends UserCommand
 
                 ob_start();
                 foreach($tmpDay as $key => $value) {
-                    echo "<b>".$key."</b>\n"; // Weekday
                     foreach($value as $data) {
                         foreach($data as $key => $value) {
                             if(strcmp($key, "Ruokainekset")==0) {
@@ -74,7 +73,10 @@ class RuokaCommand extends UserCommand
                                     echo " ".$value;
                                 }
                                 echo "\n\n";
-                            } else {
+                            } elseif(strcmp($key, "Ruokainekset")==0) {
+                                str_replace("/", "&#47", $value);
+                            }
+                            else {
                                 echo $key.": ".$value."\n";
                             }
 

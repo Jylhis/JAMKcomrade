@@ -24,6 +24,8 @@
 
 namespace JAMKcomrade;
 require __DIR__ . '/getLukkari.php';
+require __DIR__ . '/getRyhma.php';
+require __DIR__ . '/vendor/autoload.php';
 ?>
 <!doctype html>
 <html lang="fi">
@@ -33,18 +35,8 @@ require __DIR__ . '/getLukkari.php';
         <title>Lukkari</title>
         <link rel="icon" type="image/png" href="favicon.png">
         <?php
-        $WinterTheme = false;
+        echo "<link rel='stylesheet' href='style.css'>";
 
-        if(date('n')==12)
-        {
-            $WinterTheme = true;
-        }
-        if($WinterTheme)
-        {
-            echo "<link rel='stylesheet' href='winterstyle.css'>";
-        } else {
-            echo "<link rel='stylesheet' href='style.css'>";
-        }
         echo"</head><body>";
 
         date_default_timezone_set('Europe/Helsinki');
@@ -59,10 +51,16 @@ require __DIR__ . '/getLukkari.php';
         } else {
             $year = date('Y');
         }
+
         if(isset($_GET['luokka'])) {
             $luokka = strtoupper($_GET['luokka']);
+            setcookie("group",$luokka,time()+94608000);
         } else {
-            $luokka = "TTV15S3";
+            if(isset($_COOKIE["group"])){
+                $luokka = $_COOKIE["group"];
+            } else {
+                $luokka = "TTV15S3";
+            }
         }
 
         $lastweek = $week-1;
@@ -70,7 +68,21 @@ require __DIR__ . '/getLukkari.php';
         $lastyear = $year-1;
         $nextyear = $year+1;
 
-        echo "<h1>{$luokka} ";
+        if(!apcu_exists("groups"))
+        {
+            FetchGroups();
+        }
+
+        echo "<form method='get' action='lukkari.php'> <select name='luokka' onchange='this.form.submit()'>";
+        foreach(apcu_fetch("groups") as $group) {
+
+            if(strcmp($group, $luokka)==0) {
+                echo "<option value='{$group}' selected='selected'>{$group}</option> ";
+            } else {
+                echo "<option value='{$group}'>{$group}</option> ";
+            }
+        }
+        echo "</select></form> ";
 
         if($week == 1) {
             echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week=52&year={$lastyear}'><<</a>";
@@ -87,7 +99,7 @@ require __DIR__ . '/getLukkari.php';
             echo "<a href='{$_SERVER['PHP_SELF']}?luokka={$luokka}&week={$nextweek}&year={$year}'>>></a>";
         }
 
-        echo " Year:".$year."</h1>";
+        echo " Year:".$year."";
 
         // Check date
         if ($year<date("Y")-1 || $year>date("Y")+1) {
@@ -125,12 +137,6 @@ require __DIR__ . '/getLukkari.php';
             }
         }
         echo apcu_fetch($cache."-HTML");
-
-
-        if($WinterTheme) {
-            echo "<script>" . file_get_contents("snowstorm-min.js") . "</script>";
-            echo "<script>snowStorm.followMouse = false;snowStorm.vMaxX = 3;snowStorm.vMaxY = 3;</script>";
-        }
         ?>
 
 </body>

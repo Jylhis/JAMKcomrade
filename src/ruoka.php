@@ -32,18 +32,8 @@ require __DIR__ . '/getAimo.php';
         <meta name=viewport content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/png" href="favicon.png">
         <?php
-        $WinterTheme = false;
-
-        if(date('n')==12)
-        {
-            $WinterTheme = true;
-        }
-        if($WinterTheme)
-        {
-            echo "<link rel='stylesheet' href='winterstyle.css'>";
-        } else {
             echo "<link rel='stylesheet' href='style.css'>";
-        }
+
         echo"</style></head><body>";
 
         date_default_timezone_set('Europe/Helsinki');
@@ -132,11 +122,6 @@ require __DIR__ . '/getAimo.php';
             }
         }
         echo apcu_fetch($cache."-HTML");
-
-        if($WinterTheme) {
-            echo "<script>" . file_get_contents("snowstorm-min.js") . "</script>";
-            echo "<script>snowStorm.followMouse = false;snowStorm.vMaxX = 3;snowStorm.vMaxY = 3;</script>";
-        }
         ?>
 </body>
 </html>
