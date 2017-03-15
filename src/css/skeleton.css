@@ -41,9 +41,14 @@ h2 {
 }
 
 form {
-    display: inline;
+    display: block;
 }
 
+@media (min-width: 650px) {
+form {
+    display: inline;
+}
+}
 /*
 * Skeleton V2.0.4
 * Copyright 2014, Dave Gamache
