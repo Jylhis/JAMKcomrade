@@ -67,14 +67,13 @@ class RuokaCommand extends UserCommand
                     foreach($value as $data) {
                         foreach($data as $key => $value) {
                             if(strcmp($key, "Ruokainekset")==0) {
-                                //print_r($value);
                                 echo $key.":";
                                 foreach($value as $key => $value) {
                                     echo " ".$value;
                                 }
                                 echo "\n\n";
-                            } elseif(strcmp($key, "Ruokainekset")==0) {
-                                str_replace("/", "&#47", $value);
+                            } elseif(strcmp($key, "Hinta")==0) {
+                                echo $key.": ". str_replace("/", " / ", $value). "\n";
                             }
                             else {
                                 echo $key.": ".$value."\n";
