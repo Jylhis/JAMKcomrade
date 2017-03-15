@@ -69,7 +69,6 @@ class LukkariCommand extends UserCommand
                 $tmpDay = array_slice($datas, $wday, 1);
 
                 foreach($tmpDay as $key => $value) {
-                    echo "<b>".$key."</b>\n\n";
                     foreach($value as $data) {
                         foreach($data as $key => $value) {
                             echo $key.": ".$value."\n";
