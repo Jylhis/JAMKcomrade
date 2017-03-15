@@ -1,7 +1,9 @@
 body {
     background-color: #00497d;
 }
-
+h2 {
+    color: #00497d;
+}
 .header {
     margin: 20px;
 }
