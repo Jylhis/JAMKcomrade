@@ -1,3 +1,6 @@
+/* Copyright 2017 Markus Jylhänkangas
+ * Licensed under MIT license
+ */
 body {
     background-color: #00497d;
 }
@@ -37,6 +40,9 @@ h2 {
     font-size: 1.2em;
 }
 
+form {
+    display: inline;
+}
 
 /*
 * Skeleton V2.0.4
