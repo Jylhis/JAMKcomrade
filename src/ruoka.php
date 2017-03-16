@@ -90,7 +90,7 @@ date_default_timezone_set('Europe/Helsinki');
             echo "Week must be between ".ltrim(date("W"),'0')."-".(date("W")+1);
             return;
         }
-
+    echo "</div>";
 
         // Load content
         $cache = "Aimo-" . $week .'-'.$year;
