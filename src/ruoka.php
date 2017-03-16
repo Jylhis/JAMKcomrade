@@ -60,7 +60,7 @@ date_default_timezone_set('Europe/Helsinki');
     <body>
     <div class="container">
             <div class="row header" align="center">
-            <div class="num">Aimo</div>
+            <div class="num foodName">Aimo</div>
             <div class="num">
  <?php
         if($week == 1) {

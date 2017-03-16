@@ -49,6 +49,16 @@ form {
     display: inline;
 }
 }
+
+.foodName {
+    display: block;
+}
+
+@media (min-width: 400px) {
+.foodName {
+    display: inline;
+}
+}
 /*
 * Skeleton V2.0.4
 * Copyright 2014, Dave Gamache
