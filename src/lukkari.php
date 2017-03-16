@@ -91,7 +91,9 @@ if(!apcu_exists("groups"))
                             echo "<option value='{$group}'>{$group}</option> ";
                         }
                     }?>
-                </select></form><div class='num'>
+                </select>
+                </form>
+                <div class='num'>
 
                     <?php
                     // Week select
@@ -135,7 +137,7 @@ if(!apcu_exists("groups"))
 
                         if($datas == false)
                         {
-                            echo "No Data!";
+                            echo "<div class='row card'>No Data!</div>";
                         }
                         else {
                             ob_start();

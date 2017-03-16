@@ -23,20 +23,9 @@
  */
 namespace JAMKcomrade;
 require __DIR__ . '/getAimo.php';
-?>
-<!doctype html>
-<html lang="fi">
-    <head>
-        <meta charset="utf-8">
-        <title>Ruoka</title>
-        <meta name=viewport content="width=device-width, initial-scale=1">
-        <link rel="icon" type="image/png" href="favicon.png">
-        <?php
-            echo "<link rel='stylesheet' href='style.css'>";
+require __DIR__ . '/vendor/autoload.php';
 
-        echo"</style></head><body>";
-
-        date_default_timezone_set('Europe/Helsinki');
+date_default_timezone_set('Europe/Helsinki');
 
         if(isset($_GET['week']) && $_GET['week']>0 && $_GET['week']<=52) {
             $week = sprintf("%02d",$_GET['week']);
@@ -53,37 +42,57 @@ require __DIR__ . '/getAimo.php';
         $nextweek = $week+1;
         $lastyear = $year-1;
         $nextyear = $year+1;
-
-        echo "<h1>Aimo ";
-
+?>
+<!doctype html>
+<html lang="fi">
+    <head>
+        <meta charset="utf-8">
+        <title>Ruoka</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" href="favicon.png">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/skeleton.css">
+        
+        <meta property="og:title" content="Aimo Ruokalista">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://www.jylhis.com/jamk/ruoka.php?&week=<?php{$week}?>&year=<?php{$year}?>">
+    </head>
+    <body>
+    <div class="container">
+            <div class="row header" align="center">
+            <div class="num">Aimo</div>
+            <div class="num">
+ <?php
         if($week == 1) {
-            echo "<a href='{$_SERVER['PHP_SELF']}?week=52&year={$lastyear}'><<</a>";
+            echo "<a href='{$_SERVER['PHP_SELF']}?week=52&year={$lastyear}'>&#10134</a>";
         } else {
-            echo "<a href='{$_SERVER['PHP_SELF']}?week={$lastweek}&year={$year}'><<</a>";
+            echo "<a href='{$_SERVER['PHP_SELF']}?week={$lastweek}&year={$year}'>&#10134</a>";
         }
 
-        echo "Week:{$week}";
+        echo "Viikko: {$week}";
 
         if ($week == 52) {
-            echo "<a href='{$_SERVER['PHP_SELF']}?week=1&year={$nextyear}'>>></a>";
+            echo "<a href='{$_SERVER['PHP_SELF']}?week=1&year={$nextyear}'>&#10133;</a>";
 
         } else {
-            echo "<a href='{$_SERVER['PHP_SELF']}?week={$nextweek}&year={$year}'>>></a>";
+            echo "<a href='{$_SERVER['PHP_SELF']}?week={$nextweek}&year={$year}'>&#10133;</a>";
         }
 
-        echo " Year:".$year."</h1>";
+        echo "</div><div class='num'>Vuosi: {$year}</div>";
 
         // Check date
         if ($year!=date("Y")) {
             echo "Year must be current year";
             return;
         }
+        // Check week
         if (ltrim($week,'0')<date("W") || ltrim($week,'0')>date("W")+1) {
             echo "Week must be between ".ltrim(date("W"),'0')."-".(date("W")+1);
             return;
         }
 
 
+        // Load content
         $cache = "Aimo-" . $week .'-'.$year;
 
         if(!apcu_exists($cache."-HTML")) {
@@ -99,7 +108,7 @@ require __DIR__ . '/getAimo.php';
             else {
                 ob_start();
                 foreach($datas as $key => $value) {
-                    echo "<hr><h2>".$key."</h2>"; // Weekday
+                    echo "<div class='row card'><h2>".$key."</h2>"; // Weekday
                     foreach($value as $data) {
                         foreach($data as $key => $value) {
 
@@ -116,6 +125,7 @@ require __DIR__ . '/getAimo.php';
 
                         }
                     }
+                    echo "</div>";
                 }
                 apcu_add($cache."-HTML", ob_get_contents(), 2628000);
                 ob_end_clean();
@@ -123,5 +133,6 @@ require __DIR__ . '/getAimo.php';
         }
         echo apcu_fetch($cache."-HTML");
         ?>
+        </div>
 </body>
 </html>
