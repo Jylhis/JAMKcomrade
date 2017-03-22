@@ -13,12 +13,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "Jylhis\\JAMKcomrade\\": "src/"
+      "JAMKcomrade\\": "src/"
     }
   },
   "autoload-dev": {
         "psr-4": {
-            "Jylhis\\JAMKcomrade\\Tests\\Unit\\": "tests/unit"
+            "JAMKcomrade\\Tests\\": "tests/unit"
         }
   },
 
