@@ -1,6 +1,6 @@
 image: ubuntu
 
-test:
+unit:
   script:
     - apt-get update
     - apt-get install -qq composer php-curl php-mbstring php-xml zip unzip

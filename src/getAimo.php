@@ -32,65 +32,26 @@ function GetAimo($week, $year) {
     $json = json_decode($rawdata);
 
     $days = $json->MenusForDays;
-
-    $odata = Array();
-
-    $numDay = 0;
-    foreach($days as $day) {
-        $dayarr = Array();
-        foreach($day->SetMenus as $foods) {
-            //array_push($components, $comp);
-            //print_r($foods);
-            $foodarr= Array();
-
-            $name = $foods->Name;
-            $price = $foods->Price;
-
-            $comps = Array();
-            foreach($foods->Components as $comp) {
-                array_push($comps, $comp);
-            }
-
-            array_push($foodarr, $name);
-            array_push($foodarr, $price);
-            array_push($foodarr, $comps);
-
-            array_push($dayarr, $foodarr);
-        }
-        array_push($odata, $dayarr);
-                 ++$numDay;
-    }
-
-    // Output
-
-    if(empty($odata)) {
+    
+    if(strcmp($days[0]->LunchTime,"null")==0) {
         apcu_add("Aimo-".$week.'-'.$year, false, 54000);
         return;
     } else {
-        $weekday = array(
-            "Maanantai" => array(),
-            "Tiistai" => array(),
-            "Keskiviikko" => array(),
-            "Torstai" => array(),
-            "Perjantai" => array()
-        );
-
-        $i=0;
-        foreach($weekday as $key => $value) {
-            foreach($odata[$i] as $day) {
-                $courseData = array(
-                    "Ruoka" => $day[0],
-                    "Hinta" => $day[1],
+        $week = array();
+        foreach($days as $day) {
+            $today = array();
+            foreach($day->SetMenus as $todaysFood) {
+                $foodInfo = array(
+                    "Ruoka" => $todaysFood->Name,
+                    "Hinta" => $todaysFood->Price,
                     "Ruokainekset" => array()
                 );
-                foreach($day[2] as $comps) {
+                foreach($todaysFood->Components as $comps) {
                     array_push($courseData["Ruokainekset"], $comps);
                 }
-                array_push($weekday[$key], $courseData);
+                array_push($today, $foodInfo);
             }
-            ++$i;
+            array_push($week, $today);
         }
-        apcu_add("Aimo-".$week.'-'.$year, $weekday, 2628000); // 1 month
-
+        apcu_add("Aimo-".$week.'-'.$year, $week, 2628000); // 1 month
     }
-}
