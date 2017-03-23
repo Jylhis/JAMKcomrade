@@ -1,5 +1,8 @@
 <?php
 // Remove '.example' from file name
+
+
+// Telegram bot info
 $API_KEY = '****************';
 $BOT_NAME = '**********';
 $hook_url = 'http://****.**';
