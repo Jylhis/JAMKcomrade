@@ -3,6 +3,6 @@ image: ubuntu
 test:
   script:
     - apt-get update
-    - apt-get install -qq composer php-curl php-mbstring php-xml
+    - apt-get install -qq composer php-curl php-mbstring php-xml zip unzip
     - composer install
     - src/vendor/bin/phpunit
