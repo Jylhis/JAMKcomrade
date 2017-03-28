@@ -23,18 +23,18 @@
  */
 namespace JAMKcomrade;
 
-function GetAimo($week, $year) {
+function GetAimo($weekNum, $year) {
     $date = new \DateTime();
-    $date = $date->setISODate($year, $week)->format('Y/m/d');
+    $date = $date->setISODate($year, $weekNum)->format('Y/m/d');
 
     $url = "http://www.amica.fi/modules/json/json/Index?costNumber=0350&language=fi&firstDay={$date}";
     $rawdata = file_get_contents($url);
     $json = json_decode($rawdata);
 
     $days = $json->MenusForDays;
-    
+
     if(strcmp($days[0]->LunchTime,"null")==0) {
-        apcu_add("Aimo-".$week.'-'.$year, false, 54000);
+        apcu_add("Aimo-".$weekNum.'-'.$year, false, 54000);
         return;
     } else {
         $week = array();
@@ -47,11 +47,12 @@ function GetAimo($week, $year) {
                     "Ruokainekset" => array()
                 );
                 foreach($todaysFood->Components as $comps) {
-                    array_push($courseData["Ruokainekset"], $comps);
+                    array_push($foodInfo["Ruokainekset"], $comps);
                 }
                 array_push($today, $foodInfo);
             }
             array_push($week, $today);
         }
-        apcu_add("Aimo-".$week.'-'.$year, $week, 2628000); // 1 month
+        apcu_add("Aimo-".$weekNum.'-'.$year, $week, 2628000); // 1 month
     }
+}

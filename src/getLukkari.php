@@ -44,12 +44,12 @@ function Get($luokka, $week, $year) {
     foreach($rows as $row) {
         $cols = $row->getElementsByTagName('td');
         //for($i = 0; $i < $cols->length; ++$i) {
-            
+
         // cols->items()??
         foreach($cols as $col) {
             $div = $col->getElementsByTagName('div');
             $span = $div->item(0)->getElementsByTagName('span');
-            
+
             $columnarr = array();
             foreach($span as $txt) {
                 array_push($columnarr, $txt->nodeValue);
@@ -67,7 +67,7 @@ function Get($luokka, $week, $year) {
             if(strcmp($prev, $entry) === 0) {
                 continue;
             } else {
-                
+
                 $prev = $entry;
 
                 $timeP = '/\d{2}:\d{2}-\d{2}:\d{2}|\d{2}-\d{2}/';
@@ -106,6 +106,6 @@ function Get($luokka, $week, $year) {
         apcu_add($luokka.'-'.$week.'-'.$year, false, 54000);
         return;
     } else {
-        apcu_add($luokka.'-'.$week.'-'.$year, $weekday, 2628000); // 1 month
+        apcu_add($luokka.'-'.$week.'-'.$year, $weekFormatted, 2628000); // 1 month
     }
 }
