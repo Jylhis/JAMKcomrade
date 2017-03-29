@@ -23,6 +23,7 @@
  */
 namespace JAMKcomrade;
 
+/// Funktio hakee ruokalistat Aimo ravintolan sivuilta ja formatoidatan
 function GetAimo($weekNum, $year) {
     $date = new \DateTime();
     $date = $date->setISODate($year, $weekNum)->format('Y/m/d');
@@ -39,19 +40,22 @@ function GetAimo($weekNum, $year) {
     } else {
         $week = array();
         foreach($days as $day) {
-            $today = array();
-            foreach($day->SetMenus as $todaysFood) {
-                $foodInfo = array(
-                    "Ruoka" => $todaysFood->Name,
-                    "Hinta" => $todaysFood->Price,
-                    "Ruokainekset" => array()
-                );
-                foreach($todaysFood->Components as $comps) {
-                    array_push($foodInfo["Ruokainekset"], $comps);
+            if(!empty($day->SetMenus)) {
+                $today = array();
+                foreach($day->SetMenus as $todaysFood) {
+                    $foodInfo = array(
+                        "Ruoka" => $todaysFood->Name,
+                        "Hinta" => $todaysFood->Price,
+                        "Ruokainekset" => array()
+                    );
+                    foreach($todaysFood->Components as $comps) {
+                        array_push($foodInfo["Ruokainekset"], $comps);
+                    }
+                    array_push($today, $foodInfo);
+
                 }
-                array_push($today, $foodInfo);
+                array_push($week, $today);
             }
-            array_push($week, $today);
         }
         apcu_add("Aimo-".$weekNum.'-'.$year, $week, 2628000); // 1 month
     }

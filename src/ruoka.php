@@ -27,21 +27,21 @@ require __DIR__ . '/vendor/autoload.php';
 
 date_default_timezone_set('Europe/Helsinki');
 
-        if(isset($_GET['week']) && $_GET['week']>0 && $_GET['week']<=52) {
-            $week = sprintf("%02d",$_GET['week']);
-        } else {
-            $week = date('W');
-        }
-        if(isset($_GET['year'])) {
-            $year = $_GET['year'];
-        } else {
-            $year = date('Y');
-        }
+if(isset($_GET['week']) && $_GET['week']>0 && $_GET['week']<=52) {
+    $week = sprintf("%02d",$_GET['week']);
+} else {
+    $week = date('W');
+}
+if(isset($_GET['year'])) {
+    $year = $_GET['year'];
+} else {
+    $year = date('Y');
+}
 
-        $lastweek = $week-1;
-        $nextweek = $week+1;
-        $lastyear = $year-1;
-        $nextyear = $year+1;
+$lastweek = $week-1;
+$nextweek = $week+1;
+$lastyear = $year-1;
+$nextyear = $year+1;
 ?>
 <!doctype html>
 <html lang="fi">
@@ -52,87 +52,96 @@ date_default_timezone_set('Europe/Helsinki');
         <link rel="icon" type="image/png" href="favicon.png">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/skeleton.css">
-        
+
         <meta property="og:title" content="Aimo Ruokalista">
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://www.jylhis.com/jamk/ruoka.php?&week=<?php{$week}?>&year=<?php{$year}?>">
     </head>
     <body>
-    <div class="container">
+        <div class="container">
             <div class="row header" align="center">
-            <div class="num foodName">Aimo</div>
-            <div class="num">
- <?php
-        if($week == 1) {
-            echo "<a href='{$_SERVER['PHP_SELF']}?week=52&year={$lastyear}'>&#10134</a>";
-        } else {
-            echo "<a href='{$_SERVER['PHP_SELF']}?week={$lastweek}&year={$year}'>&#10134</a>";
-        }
+                <div class="num foodName">Aimo</div>
+                <div class="num">
+                    <?php
+                    if($week == 1) {
+                        echo "<a href='{$_SERVER['PHP_SELF']}?week=52&year={$lastyear}'>&#10134</a>";
+                    } else {
+                        echo "<a href='{$_SERVER['PHP_SELF']}?week={$lastweek}&year={$year}'>&#10134</a>";
+                    }
 
-        echo "Viikko: {$week}";
+                    echo "Viikko: {$week}";
 
-        if ($week == 52) {
-            echo "<a href='{$_SERVER['PHP_SELF']}?week=1&year={$nextyear}'>&#10133;</a>";
+                    if ($week == 52) {
+                        echo "<a href='{$_SERVER['PHP_SELF']}?week=1&year={$nextyear}'>&#10133;</a>";
 
-        } else {
-            echo "<a href='{$_SERVER['PHP_SELF']}?week={$nextweek}&year={$year}'>&#10133;</a>";
-        }
+                    } else {
+                        echo "<a href='{$_SERVER['PHP_SELF']}?week={$nextweek}&year={$year}'>&#10133;</a>";
+                    }
 
-        echo "</div><div class='num'>Vuosi: {$year}</div>";
+                    echo "</div><div class='num'>Vuosi: {$year}</div>";
 
-        // Check date
-        if ($year!=date("Y")) {
-            echo "Year must be current year";
-            return;
-        }
-        // Check week
-        if (ltrim($week,'0')<date("W") || ltrim($week,'0')>date("W")+1) {
-            echo "Week must be between ".ltrim(date("W"),'0')."-".(date("W")+1);
-            return;
-        }
-    echo "</div>";
-
-        // Load content
-        $cache = "Aimo-" . $week .'-'.$year;
-
-        if(!apcu_exists($cache."-HTML")) {
-            if(!apcu_exists($cache)) {
-                echo GetAimo($week, $year);
-            }
-            $datas = apcu_fetch($cache);
-
-            if($datas == false)
-            {
-                echo "No Data!";
-            }
-            else {
-                ob_start();
-                foreach($datas as $key => $value) {
-                    echo "<div class='row card'><h2>".$key."</h2>"; // Weekday
-                    foreach($value as $data) {
-                        foreach($data as $key => $value) {
-
-                            if(strcmp($key, "Ruokainekset")==0) {
-                                //print_r($value);
-                                echo $key.":";
-                                foreach($value as $key => $value) {
-                                    echo " ".$value;
-                                }
-                                echo "<br><br>";
-                            } else {
-                                echo $key.": ".$value."<br>";
-                            }
-
-                        }
+                    // Check date
+                    if ($year!=date("Y")) {
+                        echo "Year must be current year";
+                        return;
+                    }
+                    // Check week
+                    if (ltrim($week,'0')<date("W") || ltrim($week,'0')>date("W")+1) {
+                        echo "Week must be between ".ltrim(date("W"),'0')."-".(date("W")+1);
+                        return;
                     }
                     echo "</div>";
-                }
-                apcu_add($cache."-HTML", ob_get_contents(), 2628000);
-                ob_end_clean();
-            }
-        }
-        echo apcu_fetch($cache."-HTML");
-        ?>
-        </div>
-</body>
+
+                    // Load content
+                    $cache = "Aimo-" . $week .'-'.$year;
+
+
+                    $weekdayName = array(
+                        "Maanantai",
+                        "Tiistai",
+                        "Keskiviikko",
+                        "Torstai",
+                        "Perjantai"
+                    );
+
+                    if(!apcu_exists($cache."-HTML")) {
+                        if(!apcu_exists($cache)) {
+                            echo GetAimo($week, $year);
+                        }
+                        $datas = apcu_fetch($cache);
+
+                        if($datas == false)
+                        {
+                            echo "<div class='row card'>No Data!</div>";
+                        }
+                        else {
+                            ob_start();
+                            foreach($datas as $key => $value) {
+                                echo "<div class='row card'><h2>".$weekdayName[$key]."</h2>"; // Weekday
+                                foreach($value as $data) {
+                                    foreach($data as $key => $value) {
+
+                                        if(strcmp($key, "Ruokainekset")==0) {
+                                            //print_r($value);
+                                            echo $key.":";
+                                            foreach($value as $key => $value) {
+                                                echo " ".$value;
+                                            }
+                                            echo "<br><br>";
+                                        } else {
+                                            echo $key.": ".$value."<br>";
+                                        }
+
+                                    }
+                                }
+                                echo "</div>";
+                            }
+                            apcu_add($cache."-HTML", ob_get_contents(), 2628000);
+                            ob_end_clean();
+                        }
+                    }
+                    echo apcu_fetch($cache."-HTML");
+                    ?>
+                </div>
+    </body>
 </html>

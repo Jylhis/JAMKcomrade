@@ -126,6 +126,8 @@ if(!apcu_exists("groups"))
                     }
 
 
+                    print_r(Get($luokka, $week, $year));
+
                     // Load Content
                     $cache = $luokka . "-" . $week .'-'.$year;
 

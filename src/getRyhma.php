@@ -24,7 +24,7 @@
  */
 namespace JAMKcomrade;
 
-
+/// Hakee JAMK:in ryhmät JAMK:in tilanvarausjärjestelmästä
 function FetchGroups() {
         $url = "https://amp.jamk.fi/asio/kalenterit2/index.php?kt=lk&guest=%2Fasiakas12&lang=fin";
 
