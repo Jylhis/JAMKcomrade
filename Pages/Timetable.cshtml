@@ -1,0 +1,45 @@
+﻿@page
+@model TimetableModel
+@{
+    ViewData["Title"] = "Timetable";
+    String luokka = "TTV15S3";
+    var year = DateTime.Today.Year;
+    var currentWeek = 37;
+    var lastWeek = currentWeek-1;
+    var nextWeek = currentWeek+1;
+}
+@*
+<h2>@ViewData["Title"]</h2>
+<h3>@Model.Message</h3>*@
+
+
+<div class="row header" align="center">
+    <form method="get" action="~/Timetable">
+        <select name="luokka" onchange="this.format.submit()">
+            @*Get Stuff *@
+        </select>
+    </form>
+    <div class=num>
+        <a href="~/Timetable?luokka=@luokka&week=@lastWeek&year=@year">&#10134</a>
+        Viikko @currentWeek
+        <a href="~/Timetable?luokka=@luokka&week=@nextWeek&year=@year">&#10133;</a>
+    </div>
+
+    <div class="num">
+        Vuosi: @year
+    </div>
+</div>
+
+@* For every weekday do this *@
+<div class="row card">
+    <h2>Weekday</h2>
+    @* For every course type *@
+    Kurssi: Nimi
+    <br>
+    Tunnus: tunnus
+    <br>
+    Aika : Aika
+    <br>
+    Luokka:
+    <br><br>
+</div>
