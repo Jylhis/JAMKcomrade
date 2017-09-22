@@ -1,39 +1,45 @@
 ﻿@page
 @model AboutModel
 @{
-    ViewData["Title"] = "About";
-    var year = DateTime.Today.Year;
-    var currentWeek = 37;
-    var lastWeek = currentWeek-1;
-    var nextWeek = currentWeek+1;
+
+
+    var lastWeek = Model.weekNum == 1 ? 52 : Model.weekNum - 1;
+    var nextWeek = Model.weekNum == 52 ? 1 : Model.weekNum + 1;
 }
-@*<h2>@ViewData["Title"]</h2>
-<h3>@Model.Message</h3>
-<p>Use this area to provide additional information.</p>
-*@
 
 
 <div class="row header" align="center">
-            <div class="num foodName">Aimo</div>
+    <div class="num foodName">@Model.RestaurantName</div>
     <div class=num>
-        <a href="~/Food?week=@lastWeek&year=@year">&#10134</a>
-        Viikko @currentWeek
-        <a href="~/Food?week=@nextWeek&year=@year">&#10133;</a>
+        <a href="~/Food?week=@lastWeek&year=@Model.Year">&#10134</a>
+        Viikko @Model.weekNum
+        <a href="~/Food?week=@nextWeek&year=@Model.Year">&#10133;</a>
     </div>
-
     <div class="num">
-        Vuosi: @year
+        Vuosi: @Model.Year
     </div>
 </div>
 
-@* For every weekday do this *@
-<div class="row card">
-    <h2>Weekday</h2>
-    @* For every food type *@
-    Ruoka: type
-    <br>
-    hinta: hinta
-    <br>
-    Ainekset :
-    <br><br>
-</div>
+
+@foreach (Day day in Model.Week)
+{
+    <div class="row card">
+        <h2>@day.Name</h2>
+        @foreach (Food food in day.FoodList)
+        {
+            <p>
+                Ruoka: @food.Name
+                <br />
+                hinta: @food.Price
+                <br />
+                Ainekset :
+                @foreach (string comp in food.Components)
+                {
+                    @comp
+
+                }
+            </p>
+            <br />
+        }
+    </div>
+}
