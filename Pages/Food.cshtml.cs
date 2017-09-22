@@ -45,22 +45,22 @@ namespace JAMKcomrade.Pages
             Message = "Your application description page.";
 
             // TODO: GET variables
-            int Year = Request.QueryString["year"];
-            if (Year == null)
+            int Year = 0;//Request.QueryString["year"];
+            if (Year == 0)
             {
                 // current year number
                 Year = DateTime.Now.Year;
             }
 
             // TODO: GET
-            int weekNum = Request.QueryString["week"];
-            if (weekNum == null)
+            int weekNum = 0; //Request.QueryString["week"];
+            if (weekNum == 0)
             {
                 // current week number
                 weekNum = GetIso8601WeekOfYear(DateTime.Now);
             }
 
-            string searchDate = FirstDateOfWeekISO8601(year, weekNum).ToString("yyyy/M/d");
+            string searchDate = FirstDateOfWeekISO8601(Year, weekNum).ToString("yyyy/M/d");
             string url = "http://www.amica.fi/modules/json/json/Index?costNumber=0350&language=fi&firstDay=" + searchDate;
 
 
@@ -140,7 +140,7 @@ namespace JAMKcomrade.Pages
             }
 
             // Return the week of our adjusted day
-            return System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            return System.Globalization.CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, System.Globalization.CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
 
         // https://stackoverflow.com/questions/662379/calculate-date-from-week-number
