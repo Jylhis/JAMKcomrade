@@ -57,10 +57,10 @@ namespace JAMKcomrade.Pages
             if (weekNum == 0)
             {
                 // current week number
-                weekNum = GetIso8601WeekOfYear(DateTime.Now);
+                weekNum = CustomDates.GetIso8601WeekOfYear(DateTime.Now);
             }
 
-            string searchDate = FirstDateOfWeekISO8601(Year, weekNum).ToString("yyyy/M/d");
+            string searchDate = CustomDates.FirstDateOfWeekISO8601(Year, weekNum).ToString("yyyy/M/d");
             string url = "http://www.amica.fi/modules/json/json/Index?costNumber=0350&language=fi&firstDay=" + searchDate;
 
 
@@ -128,6 +128,11 @@ namespace JAMKcomrade.Pages
         // This presumes that weeks start with Monday.
         // Week 1 is the 1st week of the year with a Thursday in it.
         // https://stackoverflow.com/questions/11154673/get-the-correct-week-number-of-a-given-date
+
+    }
+
+    class CustomDates
+    {
         public static int GetIso8601WeekOfYear(DateTime time)
         {
             // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
@@ -144,7 +149,7 @@ namespace JAMKcomrade.Pages
         }
 
         // https://stackoverflow.com/questions/662379/calculate-date-from-week-number
-        private static DateTime FirstDateOfWeekISO8601(int year, int weekOfYear)
+        public static DateTime FirstDateOfWeekISO8601(int year, int weekOfYear)
         {
             DateTime jan1 = new DateTime(year, 1, 1);
             int daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
