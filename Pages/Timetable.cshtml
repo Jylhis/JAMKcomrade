@@ -5,12 +5,12 @@
     String luokka = "TTV15S3";
     var year = DateTime.Today.Year;
     var currentWeek = 37;
-    var lastWeek = currentWeek-1;
-    var nextWeek = currentWeek+1;
+    var lastWeek = currentWeek - 1;
+    var nextWeek = currentWeek + 1;
 }
 @*
-<h2>@ViewData["Title"]</h2>
-<h3>@Model.Message</h3>*@
+    <h2>@ViewData["Title"]</h2>
+    <h3>@Model.Message</h3>*@
 
 
 <div class="row header" align="center">
@@ -30,16 +30,26 @@
     </div>
 </div>
 
-@* For every weekday do this *@
-<div class="row card">
-    <h2>Weekday</h2>
-    @* For every course type *@
-    Kurssi: Nimi
-    <br>
-    Tunnus: tunnus
-    <br>
-    Aika : Aika
-    <br>
-    Luokka:
-    <br><br>
-</div>
+@foreach (var day in Model.Week)
+{
+    <div class="row card">
+        <h2>@day.Name</h2>
+
+        @foreach (var tunti in day.Tunnit)
+        {
+            <p>
+                Kurssi: @tunti.name
+            </p>
+            <p>
+                Tunnus: @tunti.courseid
+            </p>
+            <p>
+                Aika : @tunti.time
+            </p>
+            <p>
+                Luokka: @tunti.room
+            </p>
+            <br>
+        }
+    </div>
+}
