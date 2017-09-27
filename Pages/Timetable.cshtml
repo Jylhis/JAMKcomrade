@@ -17,6 +17,10 @@
     <form method="get" action="~/Timetable">
         <select name="luokka" onchange="this.format.submit()">
             @*Get Stuff *@
+            @foreach (var group in Model.Groups)
+            {
+                <option value="@group">@group</option>
+            }
         </select>
     </form>
     <div class=num>
@@ -39,14 +43,11 @@
         {
             <p>
                 Kurssi: @tunti.name
-            </p>
-            <p>
+            <br />
                 Tunnus: @tunti.courseid
-            </p>
-            <p>
+            <br />
                 Aika : @tunti.time
-            </p>
-            <p>
+            <br />
                 Luokka: @tunti.room
             </p>
             <br>
