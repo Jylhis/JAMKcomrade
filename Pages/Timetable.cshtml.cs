@@ -93,15 +93,21 @@ namespace JAMKcomrade.Pages
                 }
             }
 
-           // Week = CleanDuplicates(Week);
+            Week = CleanDuplicates(Week);
 
         }
 
         private List<Paiva> CleanDuplicates(List<Paiva> list)
         {
+            // FIXME
             foreach (var day in list)
             {
-                day.Tunnit.Distinct();
+                var tunnit = day.Tunnit;
+
+                day.Tunnit = tunnit
+                    .GroupBy(i => new { i.courseid, i.time})
+                    .Select(g => g.First())
+                    .ToList();
             }
             return list.Distinct().ToList();
         }

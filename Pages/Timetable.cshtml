@@ -8,11 +8,10 @@
     var lastWeek = currentWeek - 1;
     var nextWeek = currentWeek + 1;
 }
-@*
-    <h2>@ViewData["Title"]</h2>
-    <h3>@Model.Message</h3>*@
 
 
+<!--
+    
 <div class="row header" align="center">
     <form method="get" action="~/Timetable">
         <select name="luokka" onchange="this.format.submit()">
@@ -34,6 +33,7 @@
     </div>
 </div>
 
+-->
 @foreach (var day in Model.Week)
 {
     <div class="row card">
