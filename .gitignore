@@ -6,5 +6,4 @@ cache/
 *.log
 composer.phar
 vendor/
-config/config.php
 *apcu_test.php
