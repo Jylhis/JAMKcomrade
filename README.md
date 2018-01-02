@@ -5,7 +5,7 @@ lukujärjestyksen. Ruokalistan palvelin hakee [Amican sivuilta](http://www.amica
 
 Dataan pääsee käsiksi selaimella sekä telegram botilla.
 
-Lukujärjestys ei toimi joulukuu 2017 lähtien, koska tilanvarausjärjestelmä vaatii kirjautumisen.
+Lukujärjestys ei toimi joulukuu 2017 lähtien, koska tilanvarausjärjestelmä vaatii nykyään kirjautumisen.
 
 # Branchit
 Tässä vähän selityksiä brancheille. Branchit sisältävät keskeneräisiä töitä, mutta ajattelin laittaa tähän vähän tietoja jos 
@@ -21,4 +21,6 @@ Luultavasti sama kuin `Master`, mutta ilman config tiedostoja ja php kirjastoja.
 Aloitin joskus PHP koodin siistimistä, mutta se jäi kesken. Tämä branch luultavasti sisältää pieniä parannuksia ja siivouksia.
 
 #### dotnet
-Melkein kokonaan C# portattu versio. Muistaakseni tästä puuttuu telegram botti käyttöliittymä.
+Uusin ja luultavasti parhain versio.
+Melkein kokonaan C# portattu. 
+Muistaakseni tästä puuttuu vain telegram botti käyttöliittymä.
