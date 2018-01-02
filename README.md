@@ -15,10 +15,10 @@ niistä on joskus hyötyä.
 Viimeisin versio jota pyöritettiin palvelimella
 
 #### Old
-Luultavasti sama kuin `Master`, mutta ilman config tiedostoja.
+Luultavasti sama kuin `Master`, mutta ilman config tiedostoja ja php kirjastoja.
 
 #### 4-yhdista-lukkari-php-ja-ruoka-php-koodia
-Aloitin joskus PHP koodin siitimistä, mutta se jäi kesken. Tämä branch luultavasti sisältää pieniä parannuksia ja siivouksia.
+Aloitin joskus PHP koodin siistimistä, mutta se jäi kesken. Tämä branch luultavasti sisältää pieniä parannuksia ja siivouksia.
 
 #### dotnet
 Melkein kokonaan C# portattu versio. Muistaakseni tästä puuttuu telegram botti käyttöliittymä.
